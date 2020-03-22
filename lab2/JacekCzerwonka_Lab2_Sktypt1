@@ -1,0 +1,30 @@
+#!/bin/bash
+#oświadczam że skrypt napisałem i uruchomiłem samodzielnie
+# // Jacek Czerwonka
+
+# Zadanie 1:
+# W zadanym katalogu ($1) znaleźć dowiązania symboliczne
+# do obiektów w tym samym katalogu $1 i usunąć je.
+
+if [ -d ${1} ]
+then
+	prefix=${1}
+	for filee in `ls  ${prefix}`
+	do
+		link=${prefix}/${filee}
+		if [ -L ${link}  ]
+		then
+			rel_path=`realpath --relative-to=${prefix} "${link}"`
+			if [ `realpath  ${link}` = `realpath  ${prefix}/${rel_path}` ] # check if 
+			then
+				# echo ${rel_path}
+				rm -v ${link} 
+				# usuwam link i wyswieltam informacje o usunieciu
+			fi
+		fi
+	done
+fi
+
+# w zadaniu chodziło chyba o:
+# Dużo bezpieczniej było wykorzystać readlink -f
+# i usunąć ostatni człon np. przy pomocy dirname.
